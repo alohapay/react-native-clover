@@ -119,6 +119,7 @@ public class CloverModule extends ReactContextBaseJavaModule {
             if(merchant!=null){
                 WritableMap resultMap = Arguments.createMap();
                 resultMap.putString("Mid", merchant.getMid());
+                resultMap.putString("cloverId", merchant.getId());
                 promise.resolve(resultMap);
             }
         }
