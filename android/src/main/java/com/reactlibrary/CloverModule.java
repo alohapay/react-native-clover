@@ -83,31 +83,39 @@ public class CloverModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void voidTransaction(ReadableMap options, final Promise promise) {
-        String paymentId = options.getString("paymentId");
-        String orderId = options.getString("orderId");
-        VoidPaymentRequest vpr = new VoidPaymentRequest();
-        vpr.setPaymentId(paymentId);
-        vpr.setOrderId(orderId);
-        vpr.setVoidReason("USER_CANCEL");
-        Log.d("Tag", "VoidPaymentRequest: " + vpr.toString());
-        PaymentConnector connector = initializePaymentConnector();
-        if (connector != null) {
+        try{
+            String paymentId = options.getString("paymentId");
+            String orderId = options.getString("orderId");
+            VoidPaymentRequest vpr = new VoidPaymentRequest();
+            vpr.setPaymentId(paymentId);
+            vpr.setOrderId(orderId);
+            vpr.setVoidReason("USER_CANCEL");
+            Log.d("Tag", "VoidPaymentRequest: " + vpr.toString());
+            PaymentConnector connector = initializePaymentConnector();
             connector.voidPayment(vpr);
+        }catch (Exception e){
+            promise.reject(e);
         }
+
     }
     @ReactMethod
     public void refundTransaction(ReadableMap options, final Promise promise) {
-        String paymentId = options.getString("paymentId");
-        String orderId = options.getString("orderId");
-        RefundPaymentRequest refund = new RefundPaymentRequest();
-        refund.setPaymentId(paymentId);
-        refund.setOrderId(orderId);
-        refund.setFullRefund(true);
-        Log.d("Tag", "RefundPaymentRequest - Full: " + refund.toString());
-        PaymentConnector connector = initializePaymentConnector();
-        if (connector != null) {
+        try{
+            String paymentId = options.getString("paymentId");
+            String orderId = options.getString("orderId");
+            RefundPaymentRequest refund = new RefundPaymentRequest();
+            refund.setPaymentId(paymentId);
+            refund.setOrderId(orderId);
+            refund.setFullRefund(true);
+            Log.d("Tag", "RefundPaymentRequest - Full: " + refund.toString());
+            PaymentConnector connector = initializePaymentConnector();
             connector.refundPayment(refund);
+            promise.resolve(null);
+        }catch (Exception e){
+            promise.reject(e);
         }
+
+
     }
     private PaymentConnector initializePaymentConnector() {
         // Get the Clover account that will be used with the service; uses the GET_ACCOUNTS permission

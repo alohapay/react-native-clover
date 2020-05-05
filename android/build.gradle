@@ -74,7 +74,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
     implementation 'com.clover.sdk:clover-android-sdk:248.4'
-    implementation 'com.clover.sdk:clover-android-connector-sdk:221.9'
+    implementation 'com.clover.sdk:clover-android-connector-sdk:248.4'
 }
 
 def configureReactNativePom(def pom) {
