@@ -86,12 +86,13 @@ public class CloverModule extends ReactContextBaseJavaModule {
         try{
             String paymentId = options.getString("paymentId");
             String orderId = options.getString("orderId");
+            String remoteApplicationId =  options.getString("remoteApplicationId");
             VoidPaymentRequest vpr = new VoidPaymentRequest();
             vpr.setPaymentId(paymentId);
             vpr.setOrderId(orderId);
             vpr.setVoidReason("USER_CANCEL");
             Log.d("Tag", "VoidPaymentRequest: " + vpr.toString());
-            PaymentConnector connector = initializePaymentConnector();
+            PaymentConnector connector = initializePaymentConnector(remoteApplicationId);
             connector.voidPayment(vpr);
         }catch (Exception e){
             promise.reject(e);
@@ -100,15 +101,17 @@ public class CloverModule extends ReactContextBaseJavaModule {
     }
     @ReactMethod
     public void refundTransaction(ReadableMap options, final Promise promise) {
+        //;"59F41AY81A3FT.XMA490395AY96"
         try{
             String paymentId = options.getString("paymentId");
             String orderId = options.getString("orderId");
+            String remoteApplicationId =  options.getString("remoteApplicationId");
             RefundPaymentRequest refund = new RefundPaymentRequest();
             refund.setPaymentId(paymentId);
             refund.setOrderId(orderId);
             refund.setFullRefund(true);
             Log.d("Tag", "RefundPaymentRequest - Full: " + refund.toString());
-            PaymentConnector connector = initializePaymentConnector();
+            PaymentConnector connector = initializePaymentConnector(remoteApplicationId);
             connector.refundPayment(refund);
             promise.resolve(null);
         }catch (Exception e){
@@ -117,11 +120,10 @@ public class CloverModule extends ReactContextBaseJavaModule {
 
 
     }
-    private PaymentConnector initializePaymentConnector() {
+    private PaymentConnector initializePaymentConnector(String remoteApplicationId) {
         // Get the Clover account that will be used with the service; uses the GET_ACCOUNTS permission
         Account cloverAccount = CloverAccount.getAccount(reactContext);
         // Set your RAID as the remoteApplicationId
-        String remoteApplicationId = "59F41AY81A3FT.XMA490395AY96";
 
         //Implement the interface
         IPaymentConnectorListener paymentConnectorListener = new IPaymentConnectorListener() {
